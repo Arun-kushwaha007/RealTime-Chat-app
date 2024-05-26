@@ -26,11 +26,13 @@ module.exports.register = async (req, res, next) => {
         });
 
         // Avoid sending the password back in the response
-        const userResponse = user.toObject();
-        delete userResponse.password;
+        // const userResponse = user.toObject();
+        // delete userResponse.password;
+        delete user.password;
 
-        console.log("User created successfully:", userResponse);
-        return res.json({ status: true, user: userResponse });
+        // console.log("User created successfully:", userResponse);
+        // return res.json({ status: true, user: userResponse });
+        return res.json({ status: true, user});
     } catch (ex) {
         console.error("Error in register controller:", ex);
         next(ex);
