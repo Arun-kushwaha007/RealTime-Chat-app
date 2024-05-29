@@ -43,7 +43,7 @@ function Register() {
                 toast.error(data.msg, toastOptions);
             }
             if(data.status === true){
-                localStorage.setItem("Chap-app-user", JSON.stringify(data.user));
+                localStorage.setItem("Chat-app-user", JSON.stringify(data.user));
                 navigate("/");
             }
             

@@ -97,7 +97,7 @@ export default function SetAvatar() {
               className={`avatar ${selectedAvatar === index ? 'selected' : ''}`}
             >
               <img
-                src={`data:image/s vg+xml;base64, ${avatar}`}
+                src={`data:image/svg+xml;base64, ${avatar}`}
                 alt="avatar"
                 onClick={() => setSelectedAvatar(index)}
               />
