@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Logo from '../assets/logo.svg';
 
-export default function Contacts({ contacts, currentUser }) {
+export default function Contacts({ contacts, currentUser, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   useEffect(() => {
-    console.log(contacts);
+    // console.log(contacts);
     if (currentUser) {
       setCurrentUserImage(currentUser.avatarImage);
       setCurrentUserName(currentUser.username);
     }
-  }, [currentUser]);
+  }, [currentUser, contacts]); // Added contacts as a dependency
+  
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
-    // Add logic to change the current chat here
+    changeChat(contact);
   };
 
   return (
@@ -43,6 +44,7 @@ export default function Contacts({ contacts, currentUser }) {
                 </div>
               </div>
             ))}
+            
           </div>
           <div className="current-user">
             <div className="avatar">
@@ -82,6 +84,15 @@ const Container = styled.div`
     align-items: center;
     overflow: auto;
     gap: 0.8rem;
+    &::-webkit-scrollbar{
+      width: 0.2rem;
+      &-thumb{
+        background-color: #ffffff39;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
+
+    }
     .contact {
       background-color: #ffffff39;
       min-height: 5rem;
