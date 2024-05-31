@@ -22,7 +22,7 @@ const Button = styled.button`
     justify-content: center;
     align-items: center;
     padding: 0.5rem;
-    border-raddius: 0.5rem;
+    border-radius: 0.5rem;
     background-color: #9a86f3;
     border: none;
     cursor: pointer;
