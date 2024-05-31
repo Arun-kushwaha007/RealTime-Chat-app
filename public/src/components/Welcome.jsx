@@ -7,7 +7,7 @@ export default function Welcome({currentUser}) {
     <Container>
         <img src={Robot} alt="robot" />
         <h1>
-            Welcome,<span>{currentUser.usernmae}!</span>
+            Welcome,<span>{currentUser.username}!</span>
 
         </h1>
         <h3>Please select a chat to Start Messaging</h3>
@@ -16,5 +16,16 @@ export default function Welcome({currentUser}) {
 }
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    img{
+        height: 20rem;
 
+    }
+    span{
+        color: #4e00ff;
+    }
 `;
