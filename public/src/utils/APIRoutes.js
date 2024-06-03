@@ -4,4 +4,7 @@ export const loginRoute = `${host}/api/auth/login`
 export const setAvatarRoute = `${host}/api/auth/setAvatar`
 export const allUsersRoute = `${host}/api/auth/allusers`;
 
-export const sendMessageRoute = `${host}/api/messages/addmsg`;
+// utils/APIRoutes.js
+export const sendMessageRoute = "http://localhost:5000/api/message/addmsg";
+
+export const getAllMessagesRoute = `${host}/api/messages/getmsg`;

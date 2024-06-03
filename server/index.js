@@ -14,13 +14,13 @@ console.log(`PORT: ${process.env.PORT}`);
 app.use(cors());
 app.use(express.json());
 
+// Ensure the correct base URL for your routes
 app.use("/api/auth", userRoutes);
 app.use("/api/message", messagesRoute);
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    
 }).then(() => {
     console.log("DB Connected successfully");
 }).catch((err) => {
