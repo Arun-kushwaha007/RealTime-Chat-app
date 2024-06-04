@@ -14,13 +14,13 @@ export default function ChatContainer({ currentChat, currentUser }) {
                 try {
                     const response = await axios.post(getAllMessagesRoute, {
                         from: currentUser._id,
-                        to: currentChat._id,
+                    to: currentChat._id,
                     });
                     setMessages(response.data);
                 } catch (error) {
                     console.error('Error fetching messages:', error);
                 }
-                console.log(getAllMessagesRoute,currentUser,currentChat);
+                console.log(getAllMessagesRoute);
             }
         };
         fetchMessages();
@@ -39,6 +39,7 @@ export default function ChatContainer({ currentChat, currentUser }) {
         } catch (error) {
             console.error('Error sending message:', error);
         }
+        console.log(sendMessageRoute);
     };
 
     return (
