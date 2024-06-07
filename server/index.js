@@ -3,8 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const messagesRoute = require("./routes/messagesRoute");
-
 const app = express();
+const socket = require("socket.io");
 require("dotenv").config();
 
 console.log("Environment variables loaded:");
@@ -36,4 +36,11 @@ const server = app.listen(process.env.PORT, () => {
 app.use((err, req, res, next) => {
     console.error("Global error handler:", err.stack);
     res.status(500).send('Something broke!');
+});
+
+const io = socket(server,{
+    cors: {
+        origin: "http://localhost:3000",
+        credential:true,
+    },
 });
