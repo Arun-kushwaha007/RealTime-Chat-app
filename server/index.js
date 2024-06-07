@@ -28,8 +28,10 @@ mongoose.connect(process.env.MONGO_URL, {
     process.exit(1); // Exit the process with failure code
 });
 
-const server = app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+const port = process.env.PORT || 5000; // Use default port 5000 if process.env.PORT is undefined
+
+const server = app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 
 // Global error handler to catch unhandled errors
@@ -38,25 +40,40 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-const io = socket(server,{
+const io = socket(server, {
     cors: {
         origin: "http://localhost:3000",
-        credential:true,
+        credential: true,
     },
 });
 
 global.onlineUsers = new Map();
 
-io.on("connection", (socket)=>{
+io.on("connection", (socket) => {
+    console.log("New client connected:", socket.id);
     global.chatSocket = socket;
-    socket.on("add-user",(userId)=>{
+
+    socket.on("add-user", (userId) => {
         onlineUsers.set(userId, socket.id);
+        console.log(`User ${userId} connected with socket ID: ${socket.id}`);
     });
 
-    socket.on("send-msg", (data)=>{
+    socket.on("send-msg", (data) => {
         const sendUserSocket = onlineUsers.get(data.to);
-        if(sendUserSocket){
+        if (sendUserSocket) {
             socket.to(sendUserSocket).emit("msg-receive", data.message);
+            console.log(`Message from ${data.from} to ${data.to}: ${data.message}`);
         }
-    })
-})
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
+        // Optionally, remove the user from onlineUsers map
+        for (let [userId, sockId] of onlineUsers.entries()) {
+            if (sockId === socket.id) {
+                onlineUsers.delete(userId);
+                break;
+            }
+        }
+    });
+});
