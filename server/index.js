@@ -25,7 +25,7 @@ app.get("/api/avatar/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const response = await axios.get(`https://api.multiavatar.com/${id}`, {
+    const response = await axios.get(`https://api.multiavatar.com/${id}.svg`, {
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36",
