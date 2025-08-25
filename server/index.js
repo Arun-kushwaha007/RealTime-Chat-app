@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const axios = require("axios");
 const userRoutes = require("./routes/userRoutes");
 const messagesRoute = require("./routes/messagesRoute");
 const app = express();
@@ -14,10 +15,35 @@ console.log(`PORT: ${process.env.PORT}`);
 app.use(cors());
 app.use(express.json());
 
-// Ensure the correct base URL for your routes
+// Routes
 app.use("/api/auth", userRoutes);
 app.use("/api/message", messagesRoute);
 
+// const axios = require("axios");
+
+app.get("/api/avatar/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const response = await axios.get(`https://api.multiavatar.com/${id}`, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36",
+        "Accept": "image/svg+xml",
+      },
+      responseType: "text", // Important to get SVG as text
+    });
+
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.status(200).send(response.data);
+  } catch (error) {
+    console.error("🔴 Error fetching avatar:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,22 +54,23 @@ mongoose.connect(process.env.MONGO_URL, {
     process.exit(1); // Exit the process with failure code
 });
 
-const port = process.env.PORT || 5000; // Use default port 5000 if process.env.PORT is undefined
+const port = process.env.PORT || 5000;
 
 const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-// Global error handler to catch unhandled errors
+// Global error handler
 app.use((err, req, res, next) => {
     console.error("Global error handler:", err.stack);
     res.status(500).send('Something broke!');
 });
 
+// WebSocket Setup
 const io = socket(server, {
     cors: {
         origin: "http://localhost:3000",
-        credential: true,
+        credentials: true,
     },
 });
 
@@ -68,7 +95,6 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
-        // Optionally, remove the user from onlineUsers map
         for (let [userId, sockId] of onlineUsers.entries()) {
             if (sockId === socket.id) {
                 onlineUsers.delete(userId);
