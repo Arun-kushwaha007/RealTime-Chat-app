@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { registerRoute } from '../utils/APIRoutes';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Register() {
   const navigate = useNavigate();
@@ -15,10 +16,13 @@ function Register() {
     password: '',
     confirmPassword: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const toastOptions = {
     position: 'bottom-right',
-    autoClose: 8000,
+    autoClose: 5000,
     pauseOnHover: true,
     draggable: true,
     theme: 'dark',
@@ -32,34 +36,42 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (handleValidation()) {
+    if (!handleValidation()) return;
+
+    try {
+      setLoading(true);
       const { password, username, email } = values;
       const { data } = await axios.post(registerRoute, {
         username,
         email,
         password,
       });
+
       if (data.status === false) {
         toast.error(data.msg, toastOptions);
       } else if (data.status === true) {
         localStorage.setItem('chat-app-user', JSON.stringify(data.user));
         navigate('/');
       }
+    } catch (err) {
+      toast.error('Something went wrong. Please try again later.', toastOptions);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleValidation = () => {
     const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
-      toast.error('Password and confirm password should be the same.', toastOptions);
+      toast.error('Password and confirm password should match.', toastOptions);
       return false;
     } else if (username.length < 3) {
-      toast.error('Username should be greater than 3 characters.', toastOptions);
+      toast.error('Username should be at least 3 characters long.', toastOptions);
       return false;
     } else if (password.length < 8) {
-      toast.error('Password should be equal or greater than 8 characters.', toastOptions);
+      toast.error('Password should be at least 8 characters long.', toastOptions);
       return false;
-    } else if (email === '') {
+    } else if (!email) {
       toast.error('Email is required.', toastOptions);
       return false;
     }
@@ -84,6 +96,7 @@ function Register() {
             name="username"
             onChange={handleChange}
             autoComplete="username"
+            required
           />
           <input
             type="email"
@@ -91,22 +104,48 @@ function Register() {
             name="email"
             onChange={handleChange}
             autoComplete="email"
+            required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={handleChange}
-            autoComplete="new-password"
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            onChange={handleChange}
-            autoComplete="new-password"
-          />
-          <button type="submit">Create User</button>
+
+          {/* Password field */}
+          <div className="password-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+              autoComplete="new-password"
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {/* Confirm password field */}
+          <div className="password-container">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              onChange={handleChange}
+              autoComplete="new-password"
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Creating...' : 'Create User'}
+          </button>
           <span>
             Already have an account? <Link to="/login">Login</Link>
           </span>
@@ -122,62 +161,106 @@ const FormContainer = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  gap: 1rem;
   align-items: center;
-  background-color: #131324;
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    img {
-      height: 5rem;
-    }
-    h1 {
-      text-transform: uppercase;
-      color: #fff;
-    }
-  }
+  background: linear-gradient(135deg, #131324, #1f1f3a);
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    background-color: #00000076;
-    border-radius: 2rem;
-    padding: 3rem 5rem;
-    input {
-      background-color: transparent;
-      padding: 1rem;
-      border: 0.1rem solid #4e0eff;
-      border-radius: 0.4rem;
-      color: #fff;
-      width: 100%;
-      font-size: 1rem;
-      &:focus {
-        border: 0.1rem solid #997af0;
-        outline: none;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 1rem;
+    padding: 3rem 4rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      img {
+        height: 3.5rem;
+      }
+      h1 {
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 1.8rem;
       }
     }
+
+    input {
+      background: #1f1f3a;
+      padding: 1rem;
+      border: 2px solid transparent;
+      border-radius: 0.5rem;
+      color: #fff;
+      font-size: 1rem;
+      transition: border 0.3s ease, background 0.3s ease;
+      width: 100%;
+
+      &:focus {
+        border: 2px solid #4e0eff;
+        outline: none;
+        background: #2a2a4d;
+      }
+    }
+
+    .password-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input {
+        width: 100%;
+        padding-right: 2.5rem;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 0.8rem;
+        cursor: pointer;
+        color: #bbb;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+      }
+
+      .password-toggle:hover {
+        color: #fff;
+      }
+    }
+
     button {
-      background-color: #997af0;
+      background: linear-gradient(90deg, #4e0eff, #997af0);
       color: white;
-      padding: 1rem 2rem;
+      padding: 0.9rem;
       border: none;
       font-weight: bold;
       cursor: pointer;
-      border-radius: 0.4rem;
+      border-radius: 0.5rem;
       font-size: 1rem;
       text-transform: uppercase;
-      transition: 0.5s ease-in-out;
-      &:hover {
-        background-color: #4e0eff;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+
+      &:hover:enabled {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
       }
     }
+
     span {
       color: white;
-      text-transform: uppercase;
+      font-size: 0.9rem;
+      text-align: center;
       a {
-        color: #4e0eff;
+        color: #997af0;
         text-decoration: none;
         font-weight: bold;
       }

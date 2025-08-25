@@ -114,61 +114,94 @@ export default function SetAvatar() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2.5rem;
   align-items: center;
   justify-content: center;
-  background-color: #131324;
-  height: 100vh;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  min-height: 100vh;
   width: 100vw;
+  position: relative;
+  overflow: hidden;
 
   .loader {
     max-inline-size: 100%;
+    margin-top: 6rem;
   }
 
   .title-container {
     h1 {
-      color: white;
+      color: #b3b3ff;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 0 2px 8px #00000033;
     }
   }
 
   .avatars {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
 
     .avatar {
-      border: 0.4rem solid transparent;
+      border: 0.3rem solid transparent;
       padding: 0.4rem;
-      border-radius: 5rem;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: 0.5s ease-in-out;
+      transition: border 0.3s, box-shadow 0.3s, transform 0.2s;
       cursor: pointer;
-      
+      background: rgba(255,255,255,0.04);
+
       img {
-        height: 6rem;
+        height: 6.2rem;
+        width: 6.2rem;
+        border-radius: 50%;
+        box-shadow: 0 4px 18px #4e00ff22;
+        transition: box-shadow 0.2s;
+      }
+
+      &:hover {
+        border: 0.3rem solid #b3b3ff;
+        box-shadow: 0 0 0 4px #4e0eff33;
+        transform: scale(1.07);
       }
     }
 
     .selected {
-      border: 0.4rem solid #4e0eff;
+      border: 0.3rem solid #4e0eff;
+      box-shadow: 0 0 0 6px #4e0eff33;
+      background: rgba(78,14,255,0.08);
+      img {
+        box-shadow: 0 6px 24px #4e0eff55;
+      }
     }
   }
 
   .submit-btn {
-    background-color: #997af0;
-    color: white;
-    padding: 1rem 2rem;
+    background: linear-gradient(90deg, #9186f3 60%, #b3b3ff 100%);
+    color: #232526;
+    padding: 1rem 2.5rem;
     border: none;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 0.4rem;
-    font-size: 1rem;
+    border-radius: 2rem;
+    font-size: 1.08rem;
     text-transform: uppercase;
-    transition: 0.5s ease-in-out;
+    letter-spacing: 1px;
+    transition: background 0.3s, color 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 2px 12px #4e00ff22;
 
     &:hover {
-      background-color: #4e0eff;
+      background: linear-gradient(90deg, #b3b3ff 60%, #9186f3 100%);
+      color: #4e0eff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 18px #4e0eff33;
     }
   }
 `;

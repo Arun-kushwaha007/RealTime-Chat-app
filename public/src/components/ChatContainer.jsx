@@ -107,6 +107,10 @@ const Container = styled.div`
     grid-template-rows: 10% 78% 12%;
     gap: 0.1rem;
     overflow: hidden;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+
     @media screen and (min-width: 720px) and (max-width: 1080px) {
         grid-auto-rows: 15% 70% 15%;
     }
@@ -122,12 +126,18 @@ const Container = styled.div`
             .avatar {
                 img {
                     height: 3rem;
+                    border-radius: 50%;
+                    border: 2px solid #b3b3ff44;
+                    background: #232526;
                 }
             }
         }
         .username {
             h3 {
-                color: white;
+                color: #b3b3ff;
+                font-size: 1.2rem;
+                font-weight: 600;
+                letter-spacing: 1px;
             }
         }
     }
@@ -149,26 +159,34 @@ const Container = styled.div`
             display: flex;
             align-items: center;
             .content {
-                padding: 1rem;
-                border-radius: 1rem;
+                padding: 1rem 1.4rem;
+                border-radius: 1.2rem;
                 color: #d1d1d1;
                 overflow-wrap: break-word;
-                font-size: 1rem;
-                max-width: 40%;
+                font-size: 1.08rem;
+                max-width: 45vw;
+                min-width: 2.5rem;
+                box-shadow: 0 2px 12px #00000018;
                 p {
                     margin: 0;
                 }
             }
-           &.sended {
+            &.sended {
                 justify-content: flex-end;
                 .content {
-                    background-color: #4f04ff21;
+                    background: linear-gradient(90deg, #4f04ff21 60%, #b3b3ff33 100%);
+                    color: #b3b3ff;
+                    border-bottom-right-radius: 0.2rem;
+                    border-top-left-radius: 1.2rem;
                 }
             }
             &.received {
                 justify-content: flex-start;
                 .content {
-                    background-color: #9900ff20;
+                    background: linear-gradient(90deg, #9900ff20 60%, #232526 100%);
+                    color: #fff;
+                    border-bottom-left-radius: 0.2rem;
+                    border-top-right-radius: 1.2rem;
                 }
             }
         }
