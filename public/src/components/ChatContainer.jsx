@@ -6,16 +6,19 @@ import axios from 'axios';
 import { sendMessageRoute, getAllMessagesRoute } from '../utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
 
+
+
 export default function ChatContainer({ currentChat, currentUser, socket }) {
     const [messages, setMessages] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const scrollRef = useRef();
 
+    
     useEffect(() => {
         const fetchMessages = async () => {
             if (currentChat) {
                 try {
-                    const response = await axios.post('http://localhost:5000/api/message/getmsg', {
+                    const response = await axios.post('https://real-time-chat-app-server-eight.vercel.app/api/message/getmsg', {
                         from: currentUser._id,
                         to: currentChat._id,
                     });

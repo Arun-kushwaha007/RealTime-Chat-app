@@ -12,7 +12,13 @@ console.log("Environment variables loaded:");
 console.log(`MONGO_URL: ${process.env.MONGO_URL}`);
 console.log(`PORT: ${process.env.PORT}`);
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://real-time-chat-app-client-taupe.vercel.app"
+    ],
+    credentials: true,
+}));
 app.use(express.json());
 
 // Routes
@@ -106,7 +112,9 @@ app.use((err, req, res, next) => {
 // WebSocket Setup
 const io = socket(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000",
+          "https://real-time-chat-app-client-taupe.vercel.app"],
+
         credentials: true,
     },
 });

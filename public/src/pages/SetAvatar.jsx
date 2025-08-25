@@ -7,7 +7,7 @@ import axios from 'axios';
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from '../utils/APIRoutes';
 
-const API_BASE = 'http://localhost:5000/api/avatar';
+const API_BASE = 'https://real-time-chat-app-server-eight.vercel.app/api/avatar';
 
 export default function SetAvatar() {
   const navigate = useNavigate();
