@@ -21,28 +21,65 @@ app.use("/api/message", messagesRoute);
 
 // const axios = require("axios");
 
+// Add this to your server.js file, replacing the existing avatar endpoint
+
+// Alternative avatar endpoint that doesn't depend on external APIs
 app.get("/api/avatar/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
-    const response = await axios.get(`https://api.multiavatar.com/${id}.svg`, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36",
-        "Accept": "image/svg+xml",
-      },
-      responseType: "text", // Important to get SVG as text
-    });
-
+    
+    // Generate deterministic colors based on ID
+    const hash = id.toString().split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+    ];
+    
+    const bgColor = colors[Math.abs(hash) % colors.length];
+    const textColor = '#FFFFFF';
+    
+    // Create simple geometric avatar
+    const patterns = [
+      // Circle pattern
+      `<circle cx="50" cy="50" r="35" fill="${bgColor}" />
+       <circle cx="50" cy="40" r="12" fill="${textColor}" opacity="0.8" />
+       <ellipse cx="50" cy="70" rx="20" ry="15" fill="${textColor}" opacity="0.8" />`,
+      
+      // Square pattern
+      `<rect x="15" y="15" width="70" height="70" rx="10" fill="${bgColor}" />
+       <circle cx="35" cy="35" r="8" fill="${textColor}" />
+       <circle cx="65" cy="35" r="8" fill="${textColor}" />
+       <rect x="40" y="55" width="20" height="8" rx="4" fill="${textColor}" />`,
+      
+      // Triangle pattern
+      `<polygon points="50,20 20,80 80,80" fill="${bgColor}" />
+       <circle cx="42" cy="45" r="6" fill="${textColor}" />
+       <circle cx="58" cy="45" r="6" fill="${textColor}" />
+       <path d="M 40 60 Q 50 70 60 60" stroke="${textColor}" stroke-width="3" fill="none" stroke-linecap="round" />`,
+    ];
+    
+    const pattern = patterns[Math.abs(hash) % patterns.length];
+    
+    const svg = `
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" fill="#f0f0f0" />
+        ${pattern}
+      </svg>
+    `;
+    
     res.setHeader("Content-Type", "image/svg+xml");
-    res.status(200).send(response.data);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.status(200).send(svg.trim());
+    
   } catch (error) {
-    console.error("🔴 Error fetching avatar:", error.message);
+    console.error(`🔴 Error generating avatar for ID ${req.params.id}:`, error.message);
     res.status(500).send("Internal Server Error");
   }
 });
-
-
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

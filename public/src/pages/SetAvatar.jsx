@@ -4,11 +4,9 @@ import styled from 'styled-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import { Buffer } from 'buffer';
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from '../utils/APIRoutes';
 
-// ✅ Use your local backend instead of external API
 const API_BASE = 'http://localhost:5000/api/avatar';
 
 export default function SetAvatar() {
@@ -61,10 +59,12 @@ export default function SetAvatar() {
           await new Promise(resolve => setTimeout(resolve, 1000)); // Delay
           const id = Math.round(Math.random() * 1000);
           const response = await axios.get(`${API_BASE}/${id}`);
-          const buffer = new Buffer(response.data);
-          data.push(buffer.toString('base64'));
+          
+          // Convert SVG string to base64
+          const base64 = btoa(response.data);
+          data.push(base64);
         } catch (error) {
-          console.error(error);
+          console.error('Error fetching avatar:', error);
           toast.error('Error fetching avatars. Please try again.', toastOptions);
           break;
         }
@@ -143,6 +143,7 @@ const Container = styled.div`
       justify-content: center;
       align-items: center;
       transition: 0.5s ease-in-out;
+      cursor: pointer;
       
       img {
         height: 6rem;
