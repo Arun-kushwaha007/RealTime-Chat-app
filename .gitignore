@@ -27,3 +27,9 @@ yarn-error.log*
 /server/.env
 /server/.next
 
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/public/.env
