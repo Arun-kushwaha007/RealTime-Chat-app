@@ -8,9 +8,8 @@ const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
 
-console.log("Environment variables loaded:");
-console.log(`MONGO_URL: ${process.env.MONGO_URL}`);
-console.log(`PORT: ${process.env.PORT}`);
+
+
 
 app.use(cors({
     origin: [
@@ -141,11 +140,16 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
+        let disconnectedUser = null;
         for (let [userId, sockId] of onlineUsers.entries()) {
             if (sockId === socket.id) {
+                disconnectedUser = userId;
                 onlineUsers.delete(userId);
                 break;
             }
+        }
+        if (disconnectedUser) {
+            console.log(`User ${disconnectedUser} (Socket: ${socket.id}) disconnected and removed from online users.`);
         }
     });
 });

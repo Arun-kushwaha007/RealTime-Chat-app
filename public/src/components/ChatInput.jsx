@@ -52,19 +52,11 @@ export default function ChatInput({ handleSendMsg }) {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  background: rgba(34, 34, 50, 0.92);
-  padding: 1rem 2.5rem 1.2rem 2.5rem;
-  border-radius: 0 0 1.2rem 1.2rem;
-  box-shadow: 0 -2px 12px #00000022;
-  gap: 1.2rem;
-  position: relative;
-  z-index: 2;
-
-  @media screen and (max-width: 900px) {
-    padding: 0.7rem 1rem 1rem 1rem;
-    border-radius: 0 0 1rem 1rem;
-    gap: 0.7rem;
-  }
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 1rem;
 
   .button-container {
     display: flex;
@@ -74,36 +66,24 @@ const Container = styled.div`
     .emoji {
       position: relative;
       svg {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
         color: #ffe066;
         cursor: pointer;
-        transition: transform 0.1s;
+        transition: all 0.3s ease;
         &:hover {
-          transform: scale(1.15);
+          transform: scale(1.2) rotate(10deg);
+          filter: drop-shadow(0 0 5px #ffe066);
         }
       }
       .EmojiPickerReact {
         position: absolute;
-        bottom: 48px;
+        bottom: 50px;
         left: 0;
-        background-color: #232526;
-        box-shadow: 0 5px 18px #9a86f3;
-        border-radius: 1rem;
-        border: 1.5px solid #9186f3;
-        z-index: 10;
-        .emoji-scroll-wrapper::-webkit-scrollbar {
-          background-color: #232526;
-          width: 5px;
-          &-thumb {
-            background-color: #9186f3;
-          }
-        }
-        .emoji-categories button {
-          filter: contrast(0.7);
-        }
-        .emoji-group:before {
-          background-color: #232526;
-        }
+        background: rgba(30, 30, 50, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 1rem !important;
       }
     }
   }
@@ -112,44 +92,57 @@ const Container = styled.div`
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 2rem;
-    background: rgba(255,255,255,0.07);
-    box-shadow: 0 2px 8px 0 rgba(78,0,255,0.04);
-    padding: 0.2rem 1.2rem;
+    padding: 0.3rem 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+
+    &:focus-within {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(153, 122, 240, 0.5);
+      box-shadow: 0 0 15px rgba(153, 122, 240, 0.1);
+    }
+
     input {
       flex: 1;
-      border: none;
+      height: 40px;
       background: transparent;
-      color: #fff;
-      font-size: 1.15rem;
-      padding: 0.7rem 0.5rem;
+      color: white;
+      border: none;
+      font-size: 1rem;
       &::placeholder {
-        color: #b3b3ffbb;
-        opacity: 1;
+        color: rgba(255, 255, 255, 0.4);
       }
       &:focus {
         outline: none;
       }
     }
+
     button {
-      padding: 0.4rem 1.4rem;
+      padding: 0.5rem 1.5rem;
       border-radius: 2rem;
       display: flex;
-      align-items: center;
       justify-content: center;
-      background: linear-gradient(90deg, #9186f3 60%, #b3b3ff 100%);
+      align-items: center;
+      background: linear-gradient(135deg, #4e0eff 0%, #997af0 100%);
       border: none;
-      transition: background 0.2s, transform 0.1s;
-      box-shadow: 0 2px 8px #4e00ff22;
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      
       svg {
         font-size: 1.5rem;
-        color: #232526;
+        color: white;
       }
+
       &:hover {
-        background: linear-gradient(90deg, #b3b3ff 60%, #9186f3 100%);
-        transform: scale(1.08);
+        transform: scale(1.05) translateX(3px);
+        box-shadow: 0 5px 15px rgba(78, 14, 255, 0.4);
+      }
+
+      &:active {
+        transform: scale(0.95);
       }
     }
   }

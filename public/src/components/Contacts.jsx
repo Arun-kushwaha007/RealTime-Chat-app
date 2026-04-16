@@ -66,130 +66,137 @@ export default function Contacts({ contacts, currentUser, changeChat }) {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 12% 73% 15%;
+  grid-template-rows: 15% 70% 15%;
   overflow: hidden;
-  background: linear-gradient(135deg, #232526 0%, #414345 100%);
-  border-radius: 1.2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-  position: relative;
-  min-height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  
   .brand {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    padding-top: 1.2rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
     img {
       height: 2.5rem;
-      filter: drop-shadow(0 2px 8px #4e00ff33);
+      filter: drop-shadow(0 0 10px rgba(78, 14, 255, 0.5));
     }
     h3 {
       text-transform: uppercase;
-      color: #b3b3ff;
-      letter-spacing: 2px;
-      font-weight: 700;
+      color: #fff;
+      font-weight: 800;
       font-size: 1.5rem;
-      text-shadow: 0 2px 8px #00000033;
+      letter-spacing: 2px;
       margin: 0;
+      background: linear-gradient(to right, #fff, #997af0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
+
   .contacts {
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    gap: 1.1rem;
-    padding: 0.7rem 0 0.7rem 0;
-    &::-webkit-scrollbar{
-      width: 0.2rem;
-      &-thumb{
-        background-color: #ffffff39;
-        width: 0.1rem;
-        border-radius: 1rem;
+    gap: 0.8rem;
+    padding: 1.5rem 0;
+    
+    &::-webkit-scrollbar {
+      width: 4px;
+      &-thumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
       }
     }
+
     .contact {
-      background: rgba(255,255,255,0.10);
-      min-height: 4.5rem;
-      width: 94%;
+      background: rgba(255, 255, 255, 0.05);
+      width: 85%;
       display: flex;
       align-items: center;
-      gap: 1.1rem;
-      border-radius: 0.9rem;
+      gap: 1rem;
+      border-radius: 1rem;
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-      padding: 0.6rem 1.2rem;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 8px 0 rgba(78,0,255,0.04);
+      padding: 0.8rem 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+
       .avatar {
         img {
-          height: 3.2rem;
+          height: 3rem;
           border-radius: 50%;
-          border: 2px solid #b3b3ff33;
-          background: #232526;
-          box-shadow: 0 2px 8px #4e00ff22;
+          border: 2px solid rgba(153, 122, 240, 0.3);
+          padding: 2px;
         }
       }
+
       .username {
         h3 {
-          color: #fff;
-          font-size: 1.13rem;
-          font-weight: 500;
-          letter-spacing: 1px;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 1rem;
+          font-weight: 600;
           margin: 0;
+          transition: all 0.3s ease;
         }
       }
+
       &:hover {
-        background: #282c34;
-        transform: scale(1.04);
-        box-shadow: 0 4px 16px 0 #4e00ff22;
+        background: rgba(255, 255, 255, 0.15);
+        transform: scale(1.02);
+        border-color: rgba(255, 255, 255, 0.1);
+        .username h3 { color: #fff; }
       }
-    }
-    .selected {
-      background: linear-gradient(90deg, #9186f3 60%, #b3b3ff 100%);
-      border: 2px solid #b3b3ff;
-      box-shadow: 0 4px 16px 0 #4e00ff33;
-      .username h3 {
-        color: #232526;
-        font-weight: 700;
+
+      &.selected {
+        background: linear-gradient(135deg, #4e0eff 0%, #997af0 100%);
+        border: none;
+        box-shadow: 0 4px 15px rgba(78, 14, 255, 0.3);
+        .username h3 {
+          color: #fff;
+          font-weight: 700;
+        }
+        .avatar img {
+          border-color: #fff;
+        }
       }
     }
   }
+
   .current-user {
-    background: rgba(13,13,48,0.97);
+    background: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     gap: 1.2rem;
     justify-content: center;
-    border-radius: 0 0 1.2rem 1.2rem;
-    box-shadow: 0 -2px 12px #00000022;
-    padding: 1.1rem 0 0.7rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+
     .avatar {
       img {
-        height: 3.6rem;
-        max-inline-size: 100%;
+        height: 3.5rem;
         border-radius: 50%;
-        border: 2px solid #b3b3ff44;
-        background: #232526;
-        box-shadow: 0 2px 8px #4e00ff22;
+        border: 2px solid #997af0;
+        padding: 2px;
       }
     }
+
     .username {
       h2 {
-        color: #b3b3ff;
-        font-size: 1.22rem;
-        font-weight: 600;
-        letter-spacing: 1px;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
         margin: 0;
       }
     }
+
     @media screen and (min-width: 720px) and (max-width: 1080px) {
-      gap: 0.7rem;
-      .username {
-        h2 {
-          font-size: 1rem;
-        }
-      }
+      gap: 0.5rem;
+      .username h2 { font-size: 0.9rem; }
     }
   }
 `;

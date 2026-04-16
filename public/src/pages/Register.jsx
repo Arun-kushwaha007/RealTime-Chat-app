@@ -162,49 +162,90 @@ const FormContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #131324, #1f1f3a);
+  background: radial-gradient(circle at top left, #2a2a5d, #131324 70%);
+  position: relative;
+  overflow: hidden;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4e0eff 0%, #997af0 100%);
+    filter: blur(100px);
+    opacity: 0.4;
+    z-index: 0;
+  }
+
+  &::before {
+    top: -100px;
+    left: -100px;
+  }
+
+  &::after {
+    bottom: -100px;
+    right: -100px;
+    background: linear-gradient(135deg, #ff007f 0%, #4e0eff 100%);
+  }
 
   form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
     padding: 3rem 4rem;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
+    z-index: 1;
+    transition: transform 0.3s ease;
 
     .brand {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       img {
-        height: 3.5rem;
+        height: 4rem;
+        filter: drop-shadow(0 0 10px rgba(78, 14, 255, 0.5));
       }
       h1 {
         text-transform: uppercase;
         color: #fff;
-        font-size: 1.8rem;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        background: linear-gradient(to right, #fff, #997af0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
 
     input {
-      background: #1f1f3a;
-      padding: 1rem;
-      border: 2px solid transparent;
-      border-radius: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.8rem;
       color: #fff;
       font-size: 1rem;
-      transition: border 0.3s ease, background 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       width: 100%;
 
       &:focus {
-        border: 2px solid #4e0eff;
+        border: 1px solid rgba(78, 14, 255, 0.8);
         outline: none;
-        background: #2a2a4d;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 15px rgba(78, 14, 255, 0.2);
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
       }
     }
 
@@ -215,54 +256,74 @@ const FormContainer = styled.div`
 
       input {
         width: 100%;
-        padding-right: 2.5rem;
+        padding-right: 3rem;
       }
 
       .password-toggle {
         position: absolute;
-        right: 0.8rem;
+        right: 1rem;
         cursor: pointer;
-        color: #bbb;
-        font-size: 1.2rem;
-        transition: color 0.3s ease;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .password-toggle:hover {
         color: #fff;
+        transform: scale(1.1);
       }
     }
 
     button {
-      background: linear-gradient(90deg, #4e0eff, #997af0);
+      background: linear-gradient(135deg, #4e0eff 0%, #997af0 100%);
       color: white;
-      padding: 0.9rem;
+      padding: 1rem;
       border: none;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      border-radius: 0.5rem;
-      font-size: 1rem;
+      border-radius: 0.8rem;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      transition: transform 0.2s ease, opacity 0.3s ease;
+      letter-spacing: 1px;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(78, 14, 255, 0.3);
 
       &:hover:enabled {
-        transform: translateY(-2px);
-        opacity: 0.9;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(78, 14, 255, 0.5);
+        filter: brightness(1.1);
+      }
+
+      &:active:enabled {
+        transform: translateY(-1px);
       }
 
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
+        background: #444;
       }
     }
 
     span {
-      color: white;
-      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
       text-align: center;
+      margin-top: 0.5rem;
       a {
         color: #997af0;
         text-decoration: none;
-        font-weight: bold;
+        font-weight: 700;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #fff;
+          text-shadow: 0 0 10px rgba(153, 122, 240, 0.8);
+        }
       }
     }
   }

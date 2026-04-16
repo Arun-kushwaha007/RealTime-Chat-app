@@ -4,6 +4,14 @@ const bcrypt = require("bcrypt");
 module.exports.register = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
+        
+        if (username.length < 3)
+            return res.json({ msg: "Username should be at least 3 characters long.", status: false });
+        if (password.length < 8)
+            return res.json({ msg: "Password should be at least 8 characters long.", status: false });
+        if (!email)
+            return res.json({ msg: "Email is required.", status: false });
+
         console.log("Received registration request:", req.body);
         
         const usernameCheck = await User.findOne({ username });
@@ -28,11 +36,10 @@ module.exports.register = async (req, res, next) => {
         // Avoid sending the password back in the response
         // const userResponse = user.toObject();
         // delete userResponse.password;
-        delete user.password;
+        const userObj = user.toObject();
+        delete userObj.password;
 
-        // console.log("User created successfully:", userResponse);
-        // return res.json({ status: true, user: userResponse });
-        return res.json({ status: true, user});
+        return res.json({ status: true, user: userObj });
     } catch (ex) {
         console.error("Error in register controller:", ex);
         next(ex);
@@ -49,8 +56,9 @@ module.exports.login = async (req, res, next) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if(!isPasswordValid)
             return res.json({ msg: "Incorrect username or password", status: false });
-        delete user.password;
-        return res.json({ status: true, user});
+        const userObj = user.toObject();
+        delete userObj.password;
+        return res.json({ status: true, user: userObj });
     } catch (ex) {
         console.error("Error in register controller:", ex);
         next(ex);
