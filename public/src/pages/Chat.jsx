@@ -24,7 +24,7 @@ function Chat() {
       }
     };
     chat_app();
-  }, []);
+  }, [navigate]);
   
   useEffect(() => {
     if(currentUser){
@@ -46,7 +46,7 @@ function Chat() {
       }
     };
     setAvatarfun();
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   const handleChatChange = (chat)=>{
     setCurrentChat(chat);

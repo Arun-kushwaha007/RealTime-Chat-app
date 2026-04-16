@@ -91,10 +91,11 @@ mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
-    console.log("DB Connected successfully");
+    console.log("✅ DB Connected successfully");
 }).catch((err) => {
-    console.error("DB Connection Error: " + err.message);
-    process.exit(1); // Exit the process with failure code
+    console.error("🔴 DB Connection Error: " + err.message);
+    console.error("TIP: If you don't have MongoDB installed locally, please use a MongoDB Atlas URI in your .env file.");
+    // We don't exit here so the server stays up, even if DB-dependent routes fail
 });
 
 const port = process.env.PORT || 5000;

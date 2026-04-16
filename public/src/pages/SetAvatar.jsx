@@ -7,7 +7,15 @@ import axios from 'axios';
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from '../utils/APIRoutes';
 
-const API_BASE = 'https://real-time-chat-app-server-eight.vercel.app/api/avatar';
+const API_BASE = process.env.REACT_APP_API_BASE;
+
+const toastOptions = {
+  position: 'bottom-right',
+  autoClose: 8000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: 'dark',
+};
 
 export default function SetAvatar() {
   const navigate = useNavigate();
@@ -15,13 +23,6 @@ export default function SetAvatar() {
   const [avatars, setAvatars] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
 
-  const toastOptions = {
-    position: 'bottom-right',
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: 'dark',
-  };
 
   useEffect(() => {
     const local = async () => {
@@ -74,7 +75,7 @@ export default function SetAvatar() {
     };
 
     fetchAvatars();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
