@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Logout from './Logout';
 import ChatInput from './ChatInput';
 import axios from 'axios';
-import { sendMessageRoute, getAllMessagesRoute } from '../utils/APIRoutes';
+import { sendMessageRoute, getMessagesRoute } from '../utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -18,7 +18,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
         const fetchMessages = async () => {
             if (currentChat) {
                 try {
-                    const response = await axios.post('https://real-time-chat-app-server-eight.vercel.app/api/message/getmsg', {
+                    const response = await axios.post(getMessagesRoute, {
                         from: currentUser._id,
                         to: currentChat._id,
                     });
@@ -61,7 +61,7 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
                 setArrivalMessage({ fromSelf: false, message: msg });
             });
         }
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
         arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
