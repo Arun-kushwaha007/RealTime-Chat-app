@@ -1,95 +1,71 @@
 import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import Robot from "../assets/robot.gif";
+import Logout from "./Logout";
 
 export default function Welcome({ currentUser }) {
   return (
-    <>
-      <GlobalStyle />
-      <Container>
-        <Card>
-          <img src={Robot} alt="robot" />
-          <h1>
-            Welcome, <span>{currentUser.username}!</span>
-          </h1>
-          <h3>Please select a chat to start messaging</h3>
-          <Tip>
-            <span role="img" aria-label="tip">💡</span>
-            Stay connected and enjoy real-time conversations!
-          </Tip>
-        </Card>
-      </Container>
-    </>
+    <Container>
+      <LogoutWrapper>
+        <Logout />
+      </LogoutWrapper>
+      <img src={Robot} alt="robot" />
+      <h1>
+        Welcome, <span>{currentUser.username}!</span>
+      </h1>
+      <h3>Please select a chat to start messaging</h3>
+    </Container>
   );
 }
 
 const Container = styled.div`
-  min-height: 80vh;
-  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: transparent;
-`;
-
-const Card = styled.div`
-  background: rgba(34, 34, 50, 0.88);
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.22);
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  max-width: 400px;
+  flex-direction: column;
+  position: relative;
+  flex-direction: column;
+  color: white;
   width: 100%;
-  color: #fff;
-  animation: fadeIn 1s;
-
+  background: transparent;
+  
   img {
-    height: 14rem;
-    margin-bottom: 1.2rem;
-    filter: drop-shadow(0 4px 24px #4e00ff33);
+    height: 18rem;
+    filter: drop-shadow(0 0 20px rgba(78, 14, 255, 0.4));
+    margin-bottom: 1rem;
+    animation: floating 3s ease-in-out infinite;
   }
+
+  @keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+
+  span {
+    color: #997af0;
+    font-weight: 800;
+  }
+
   h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 1px;
-    span {
-      color: #4e00ff;
-      font-weight: 700;
-      margin-left: 0.3rem;
-    }
+    background: linear-gradient(to right, #fff, #997af0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+
   h3 {
-    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 400;
-    margin: 0.5rem 0 0 0;
-    color: #b3b3ff;
+    font-size: 1.1rem;
     letter-spacing: 0.5px;
   }
 `;
 
-const Tip = styled.div`
-  margin-top: 1.5rem;
-  background: #282c34;
-  color: #b3b3ff;
-  padding: 0.8rem 1.2rem;
-  border-radius: 0.8rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  box-shadow: 0 2px 8px rgba(78,0,255,0.08);
-  letter-spacing: 0.2px;
-`;
-
-// import { createGlobalStyle } from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px);}
-    to { opacity: 1; transform: translateY(0);}
-  }
+const LogoutWrapper = styled.div`
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
 `;
