@@ -26,10 +26,27 @@ function Chat() {
     chat_app();
   }, [navigate]);
   
+  const refreshContacts = async () => {
+    if (currentUser && currentUser.isAvatarImageSet) {
+      const { data } = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+      setContacts(data);
+    }
+  };
+
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
       socket.current.emit("add-user", currentUser._id);
+
+      socket.current.on("friend-request-received", (data) => {
+        // Refresh contacts (or just requests in Contacts.jsx)
+        // Since Contacts.jsx manages its own request state, we might need a way to trigger it
+        // Or just let Contacts.jsx handle its own socket listeners
+      });
+      
+      socket.current.on("friend-request-accepted", (data) => {
+        refreshContacts();
+      });
     }
     return () => {
       if (socket.current) {
@@ -39,42 +56,35 @@ function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    const setAvatarfun = async () => {
-      if (currentUser) {
-        if (currentUser.isAvatarImageSet) {
-          const { data } = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-          console.log("Fetched Contacts:", data);
-          setContacts(data);
-        } else {
-          navigate("/setAvatar");
-        }
-      }
-    };
-    setAvatarfun();
+    refreshContacts();
   }, [currentUser, navigate]);
 
-  const handleChatChange = (chat)=>{
+  const handleChatChange = (chat) => {
     setCurrentChat(chat);
-  }
-  
+  };
+
   return (
     <Container>
       <div className="container">
-        <Contacts contacts={contacts} currentUser={currentUser} changeChat= {handleChatChange}
+        <Contacts
+          contacts={contacts}
+          currentUser={currentUser}
+          changeChat={handleChatChange}
+          refreshContacts={refreshContacts}
+          socket={socket}
         />
-        { isLoaded && currentChat === undefined ?(
-          <Welcome currentUser={currentUser}/>
-
-        ): (
-          <ChatContainer currentChat={currentChat} currentUser= {currentUser} 
-          socket = {socket}
+        {isLoaded && currentChat === undefined ? (
+          <Welcome currentUser={currentUser} />
+        ) : (
+          <ChatContainer
+            currentChat={currentChat}
+            currentUser={currentUser}
+            socket={socket}
           />
-        )
-
-        }
+        )}
       </div>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`

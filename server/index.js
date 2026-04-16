@@ -138,6 +138,20 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("send-friend-request", (data) => {
+        const receiverSocket = onlineUsers.get(data.to);
+        if (receiverSocket) {
+            socket.to(receiverSocket).emit("friend-request-received", data);
+        }
+    });
+
+    socket.on("accept-friend-request", (data) => {
+        const senderSocket = onlineUsers.get(data.to);
+        if (senderSocket) {
+            socket.to(senderSocket).emit("friend-request-accepted", data);
+        }
+    });
+
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
         let disconnectedUser = null;
