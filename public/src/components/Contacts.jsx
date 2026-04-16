@@ -51,6 +51,7 @@ export default function Contacts({
       setCurrentUserName(currentUser.username);
       fetchRequests();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function Contacts({
         refreshContacts();
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const fetchRequests = async () => {
